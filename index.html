@@ -24,7 +24,6 @@
     <span id="clear"></span>
 </form>
 
-
 <script>
     const API_URL = "https://diabetesflaskapi-4d525a0a92d4.herokuapp.com/predict?";
     const form = document.querySelector("form");
@@ -42,17 +41,17 @@
             method: "POST",
             body: formData
         })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-            resultDiv.innerHTML = data
-            clearSpan.innerHTML = "Clear Form"
+            .then(response => response.text()) //Since my Flask backend responds with a string
+            .then(data => {
+                console.log(data);
+                resultDiv.innerHTML = data
+                clearSpan.innerHTML = "Clear Form"
 
-        })
-        .catch(err => {
-            console.error(err);
-            resultDiv.innerHTML = "An error occurred";
-        });
+            })
+            .catch(err => {
+                console.error(err);
+                resultDiv.innerHTML = "An error occurred";
+            });
     });
 
     clearSpan.addEventListener("click", function (){
