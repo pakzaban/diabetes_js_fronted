@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<h2>Diabetes Prediction Model</h2>
+
+<form>
+    <p id="instruction">Enter numeric data in ALL of the fields below:</p>
+    <input type="number" name="1" id="pregnancies" placeholder="Number of Pregnancies" required />
+    <input type="number" name="2" id="glucose" placeholder="Glucose Level" required />
+    <input type="number" name="3" id="bloodPressure" placeholder="Blood Pressure" required/>
+    <input type="number" name="4" id="skinThickness" placeholder="Skin Thickness" required/>
+    <input type="number" name="5" id="insulin" placeholder="Insulin Level" required/>
+    <input type="number" name="6" id="bmi" placeholder="Body Mass Index (BMI)" required/>
+    <input type="number" name="7" id="diabetesPedigreeFunction" placeholder="Diabetes Pedigree Function" required/>
+    <input type="number" name="8" id="age" placeholder="Age" required/>
+    <button type="submit" id="submit_button">Submit Form</button>
+    <div id="result"></div>
+    <span id="clear"></span>
+</form>
+
+
+<script>
+    const API_URL = "https://diabetesflaskapi-4d525a0a92d4.herokuapp.com/predict?";
+    const form = document.querySelector("form");
+    const resultDiv = document.getElementById("result");
+    const clearSpan = document.getElementById("clear");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Populate FormData
+        const formData = new FormData(form);
+
+        // Fetch
+        fetch(API_URL, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            resultDiv.innerHTML = data
+            clearSpan.innerHTML = "Clear Form"
+
+        })
+        .catch(err => {
+            console.error(err);
+            resultDiv.innerHTML = "An error occurred";
+        });
+    });
+
+    clearSpan.addEventListener("click", function (){
+        resultDiv.innerHTML = "";
+        clearSpan.innerHTML = "";
+        document.querySelectorAll("input").forEach(function (input){
+            input.value="";
+        });
+    });
+</script>
+</body>
+</html>
